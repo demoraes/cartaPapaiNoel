@@ -1,6 +1,7 @@
-import { request, response, Router } from 'express';
+import { Router } from 'express';
 
 import LettersRepository from '../repositories/LettersRepository';
+import CreateLettersService from '../services/CreateLetterService';
 
 const lettersRouter = Router();
 const lettersRepository = new LettersRepository();
@@ -13,17 +14,17 @@ lettersRouter.get('/', (request, response) => {
 
 
 lettersRouter.post('/', (request, response) => {
-  const { name, message } = request.body;
+  try {
+    const { name, message } = request.body;
 
-  const findNameExists = lettersRepository.findByName(name);
+    const createLetter = new CreateLettersService(lettersRepository);
 
-  if (findNameExists) {
-    return response.status(400).json({ message: 'This name already exists' });
+    const letter = createLetter.execute({ message, name });
+
+    return response.json(letter);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
   }
-
-  const letter = lettersRepository.create(name, message);
-
-  return response.json(letter);
 });
 
 export default lettersRouter;

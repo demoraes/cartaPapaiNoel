@@ -1,5 +1,10 @@
 import Letter from '../models/Letter';
 
+interface CreateLetterDTO {
+  name: string;
+  message: string;
+}
+
 class LettersRepository {
   private letters: Letter[];
 
@@ -19,8 +24,8 @@ class LettersRepository {
     return findNameExists || null;
   }
 
-  public create(name: string, message: string): Letter {
-    const letter = new Letter(name, message);
+  public create({ message, name }: CreateLetterDTO): Letter {
+    const letter = new Letter({ name, message });
 
     this.letters.push(letter);
 

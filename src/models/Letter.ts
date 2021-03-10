@@ -7,7 +7,7 @@ class Letter {
 
   message: string;
 
-  constructor(name: string, message: string) {
+  constructor({ name, message }: Omit<Letter, 'id'>) {
     this.id = uuid();
     this.name = name;
     this.message = message;
