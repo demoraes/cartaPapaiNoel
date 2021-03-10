@@ -1,25 +1,27 @@
 import { Router } from 'express';
+import { getCustomRepository } from 'typeorm';
 
 import LettersRepository from '../repositories/LettersRepository';
 import CreateLettersService from '../services/CreateLetterService';
 
 const lettersRouter = Router();
-const lettersRepository = new LettersRepository();
+//const lettersRepository = new LettersRepository();
 
-lettersRouter.get('/', (request, response) => {
-  const letters = lettersRepository.all();
+lettersRouter.get('/', async (request, response) => {
+  const lettersRepository = getCustomRepository(LettersRepository);
+  const letters = await lettersRepository.find();
 
   return response.json(letters);
 });
 
 
-lettersRouter.post('/', (request, response) => {
+lettersRouter.post('/', async (request, response) => {
   try {
     const { name, message } = request.body;
 
-    const createLetter = new CreateLettersService(lettersRepository);
+    const createLetter = new CreateLettersService();
 
-    const letter = createLetter.execute({ message, name });
+    const letter = await createLetter.execute({ message, name });
 
     return response.json(letter);
   } catch (err) {

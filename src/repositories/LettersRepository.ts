@@ -1,35 +1,13 @@
 import Letter from '../models/Letter';
+import { EntityRepository, MongoRepository } from 'typeorm';
 
-interface CreateLetterDTO {
-  name: string;
-  message: string;
-}
+@EntityRepository(Letter)
+class LettersRepository extends MongoRepository<Letter> {
+  public async findByName(name: string): Promise<Letter | null> {
 
-class LettersRepository {
-  private letters: Letter[];
-
-  constructor() {
-    this.letters = [];
-  }
-
-  public all(): Letter[] {
-    return this.letters;
-  }
-
-  public findByName(name: string): Letter | null {
-    const findNameExists = this.letters.find(letter =>
-      letter.name === name
-    );
+    const findNameExists = await this.findOne({ name });
 
     return findNameExists || null;
-  }
-
-  public create({ message, name }: CreateLetterDTO): Letter {
-    const letter = new Letter({ name, message });
-
-    this.letters.push(letter);
-
-    return letter;
   }
 }
 

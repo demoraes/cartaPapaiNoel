@@ -1,17 +1,31 @@
-import { uuid } from 'uuidv4';
+import {
+  ObjectID,
+  ObjectIdColumn,
+  Entity,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
+@Entity('letters')
 class Letter {
-  id: string;
+  @ObjectIdColumn()
+  id: ObjectID;
 
+  @Column()
   name: string;
 
+  @Column()
   message: string;
 
-  constructor({ name, message }: Omit<Letter, 'id'>) {
-    this.id = uuid();
-    this.name = name;
-    this.message = message;
-  }
+  @Column({ default: false })
+  read: boolean;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }
 
 export default Letter;

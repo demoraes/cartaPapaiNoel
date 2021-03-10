@@ -1,5 +1,9 @@
+import { ObjectID } from 'mongodb';
+import { getCustomRepository } from 'typeorm';
+
 import Letter from '../models/Letter';
-import lettersRepository from '../repositories/LettersRepository';
+import LettersRepository from '../repositories/LettersRepository';
+
 
 interface Request {
   name: string;
@@ -7,21 +11,18 @@ interface Request {
 }
 
 class CreateLetterService {
-  private lettersRepository: lettersRepository;
+  public async execute({ message, name }: Request): Promise<Letter> {
+    const lettersRepository = getCustomRepository(LettersRepository);
 
-  constructor(lettersRepository: lettersRepository) {
-    this.lettersRepository = lettersRepository;
-  }
-
-  public execute({ message, name }: Request): Letter {
-
-    const findNameExists = this.lettersRepository.findByName(name);
+    const findNameExists = await lettersRepository.findByName(name);
 
     if (findNameExists) {
       throw Error('This name already exists');
     }
 
-    const letter = this.lettersRepository.create({ name, message });
+    const letter = lettersRepository.create({ name, message });
+
+    await lettersRepository.save(letter);
 
     return letter;
   }

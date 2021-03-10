@@ -8,7 +8,11 @@
     "dev:server": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts"
   },
   "dependencies": {
+    "@types/mongodb": "^3.6.9",
     "express": "^4.17.1",
+    "mongodb": "^3.6.4",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.31",
     "uuidv4": "^6.2.6"
   },
   "devDependencies": {
