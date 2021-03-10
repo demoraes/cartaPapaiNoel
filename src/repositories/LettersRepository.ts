@@ -7,6 +7,10 @@ class LettersRepository {
     this.letters = [];
   }
 
+  public all(): Letter[] {
+    return this.letters;
+  }
+
   public findByName(name: string): Letter | null {
     const findNameExists = this.letters.find(letter =>
       letter.name === name

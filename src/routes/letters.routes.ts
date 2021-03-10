@@ -1,9 +1,15 @@
-import { Router } from 'express';
+import { request, response, Router } from 'express';
 
 import LettersRepository from '../repositories/LettersRepository';
 
 const lettersRouter = Router();
 const lettersRepository = new LettersRepository();
+
+lettersRouter.get('/', (request, response) => {
+  const letters = lettersRepository.all();
+
+  return response.json(letters);
+});
 
 
 lettersRouter.post('/', (request, response) => {
