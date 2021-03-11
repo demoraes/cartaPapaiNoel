@@ -4,14 +4,12 @@ import Letter from '../models/Letter';
 
 interface Request {
   id: ObjectIDTypeOrm | string;
-  name: string;
-  message: string;
 }
 
-class UpdateLetterService {
-  public async execute({ message, name, id }: Request): Promise<Letter> {
+class DeleteLetterService {
+  public async execute({ id }: Request): Promise<Letter> {
     const lettersRepository = getMongoRepository(Letter);
-  
+
     if (!ObjectId.isValid(id)) {
       throw Error('This id invalid');
     }
@@ -22,11 +20,10 @@ class UpdateLetterService {
       throw Error('This letter not already exists');
     }
 
-    idLetter.name = name;
-    idLetter.message = message;
+    lettersRepository.delete(id);
 
-    return lettersRepository.save(idLetter);
+    return idLetter;
   }
 }
 
-export default UpdateLetterService;
+export default DeleteLetterService;
