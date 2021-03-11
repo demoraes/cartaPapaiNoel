@@ -1,8 +1,6 @@
-import { ObjectID } from 'mongodb';
-import { getCustomRepository } from 'typeorm';
+import { getMongoRepository } from 'typeorm';
 
 import Letter from '../models/Letter';
-import LettersRepository from '../repositories/LettersRepository';
 
 
 interface Request {
@@ -12,9 +10,9 @@ interface Request {
 
 class CreateLetterService {
   public async execute({ message, name }: Request): Promise<Letter> {
-    const lettersRepository = getCustomRepository(LettersRepository);
+    const lettersRepository = getMongoRepository(Letter);
 
-    const findNameExists = await lettersRepository.findByName(name);
+    const findNameExists = await lettersRepository.findOne({ name });
 
     if (findNameExists) {
       throw Error('This name already exists');

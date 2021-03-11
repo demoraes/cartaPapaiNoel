@@ -7,10 +7,11 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+
 @Entity('letters')
 class Letter {
   @ObjectIdColumn()
-  id: ObjectID;
+  _id: ObjectID;
 
   @Column()
   name: string;
