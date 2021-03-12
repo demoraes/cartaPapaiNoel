@@ -1,16 +1,16 @@
 import { getMongoRepository } from 'typeorm';
 
-import Letter from '../models/Letter';
-
+import Letter from '@modules/letters/infra/typeorm/models/Letter';
+import LettersRepository from '../infra/typeorm/repositories/LettersRepository';
 
 interface Request {
   name: string;
   message: string;
 }
 
-class CreateLetterService {
+class CreateLetterService  {
   public async execute({ message, name }: Request): Promise<Letter> {
-    const lettersRepository = getMongoRepository(Letter);
+    const lettersRepository = getMongoRepository(LettersRepository);
 
     const findNameExists = await lettersRepository.findOne({ name });
 
@@ -18,9 +18,8 @@ class CreateLetterService {
       throw Error('This name already exists');
     }
 
-    const letter = lettersRepository.create({ name, message });
+    const letter = await lettersRepository.create({});
 
-    await lettersRepository.save(letter);
 
     return letter;
   }

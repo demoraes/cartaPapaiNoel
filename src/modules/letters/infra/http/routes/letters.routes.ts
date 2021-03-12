@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { getMongoRepository } from 'typeorm';
 
-import CreateLettersService from '../services/CreateLetterService';
-import UpdateLetterService from '../services/UpdateLetterService';
-import DeleteLetterService from '../services/DeleteLetterService';
-import Letter from '../models/Letter';
+import CreateLettersService from '@modules/letters/services/CreateLetterService';
+import UpdateLetterService from '@modules/letters/services/UpdateLetterService';
+import DeleteLetterService from '@modules/letters/services/DeleteLetterService';
+import Letter from '@modules/letters/infra/typeorm/models/Letter';
 
 const lettersRouter = Router();
 

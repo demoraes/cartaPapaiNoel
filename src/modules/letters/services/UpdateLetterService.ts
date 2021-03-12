@@ -1,15 +1,17 @@
 import { getMongoRepository, ObjectID as ObjectIDTypeOrm } from 'typeorm';
 import { ObjectId } from 'mongodb';
-import Letter from '../models/Letter';
+import Letter from '@modules/letters/infra/typeorm/models/Letter';
 
 interface Request {
   id: ObjectIDTypeOrm | string;
+  name: string;
+  message: string;
 }
 
-class DeleteLetterService {
-  public async execute({ id }: Request): Promise<Letter> {
+class UpdateLetterService {
+  public async execute({ message, name, id }: Request): Promise<Letter> {
     const lettersRepository = getMongoRepository(Letter);
-
+  
     if (!ObjectId.isValid(id)) {
       throw Error('This id invalid');
     }
@@ -20,10 +22,11 @@ class DeleteLetterService {
       throw Error('This letter not already exists');
     }
 
-    lettersRepository.delete(id);
+    idLetter.name = name;
+    idLetter.message = message;
 
-    return idLetter;
+    return lettersRepository.save(idLetter);
   }
 }
 
-export default DeleteLetterService;
+export default UpdateLetterService;
