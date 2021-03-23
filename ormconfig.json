@@ -6,6 +6,6 @@
   "database": "cartaNatal",
   "useUnifiedTopology": true,
   "entities": [
-    "./src/models/*.ts"
+    "./src/modules/**/infra/typeorm/models/*.ts"
   ]
 }

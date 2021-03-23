@@ -5,13 +5,14 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  BeforeInsert,
 } from 'typeorm';
 
 
 @Entity('letters')
 class Letter {
   @ObjectIdColumn()
-  _id: ObjectID;
+  id: ObjectID;
 
   @Column()
   name: string;
@@ -19,7 +20,6 @@ class Letter {
   @Column()
   message: string;
 
-  @Column({ default: false })
   read: boolean;
 
   @CreateDateColumn()
@@ -27,6 +27,11 @@ class Letter {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @BeforeInsert()
+  beforeInsertActions() {
+    this.read = false;
+  }
 }
 
 export default Letter;

@@ -1,28 +1,17 @@
-import { getMongoRepository, ObjectID as ObjectIDTypeOrm } from 'typeorm';
-import { ObjectId } from 'mongodb';
 import Letter from '@modules/letters/infra/typeorm/models/Letter';
+import { ObjectID } from 'mongodb';
+import { DeleteResult } from 'typeorm';
+import ILettersRepository from '../repositories/ILettersRepository';
 
-interface Request {
-  id: ObjectIDTypeOrm | string;
-}
 
 class DeleteLetterService {
-  public async execute({ id }: Request): Promise<Letter> {
-    const lettersRepository = getMongoRepository(Letter);
 
-    if (!ObjectId.isValid(id)) {
-      throw Error('This id invalid');
-    }
+  constructor(private lettersRepository: ILettersRepository) { }
 
-    const idLetter = await lettersRepository.findOne(id);
+  public async execute(id: ObjectID): Promise<DeleteResult> {
+    const letter = await this.lettersRepository.delete(id);
 
-    if (!idLetter) {
-      throw Error('This letter not already exists');
-    }
-
-    lettersRepository.delete(id);
-
-    return idLetter;
+    return letter;
   }
 }
 

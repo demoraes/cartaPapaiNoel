@@ -1,25 +1,24 @@
-import { getMongoRepository } from 'typeorm';
-
 import Letter from '@modules/letters/infra/typeorm/models/Letter';
-import LettersRepository from '../infra/typeorm/repositories/LettersRepository';
+import ILettersRepository from '../repositories/ILettersRepository';
 
-interface Request {
+interface IRequest {
   name: string;
   message: string;
 }
 
-class CreateLetterService  {
-  public async execute({ message, name }: Request): Promise<Letter> {
-    const lettersRepository = getMongoRepository(LettersRepository);
 
-    const findNameExists = await lettersRepository.findOne({ name });
+class CreateLetterService {
+
+  constructor(private lettersRepository: ILettersRepository) { }
+
+  public async execute({ message, name }: IRequest): Promise<Letter> {
+    const findNameExists = await this.lettersRepository.findByName(name);
 
     if (findNameExists) {
       throw Error('This name already exists');
     }
 
-    const letter = await lettersRepository.create({});
-
+    const letter = await this.lettersRepository.save({ message, name });
 
     return letter;
   }

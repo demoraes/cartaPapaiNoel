@@ -1,31 +1,31 @@
-import { getMongoRepository, ObjectID as ObjectIDTypeOrm } from 'typeorm';
-import { ObjectId } from 'mongodb';
 import Letter from '@modules/letters/infra/typeorm/models/Letter';
+import { ObjectID } from 'mongodb';
+import ILettersRepository from '../repositories/ILettersRepository';
 
-interface Request {
-  id: ObjectIDTypeOrm | string;
+interface IRequest {
+  id: ObjectID;
   name: string;
   message: string;
 }
 
+
 class UpdateLetterService {
-  public async execute({ message, name, id }: Request): Promise<Letter> {
-    const lettersRepository = getMongoRepository(Letter);
-  
-    if (!ObjectId.isValid(id)) {
-      throw Error('This id invalid');
+
+  constructor(private lettersRepository: ILettersRepository) { }
+
+  public async execute({ message, name, id }: IRequest): Promise<Letter> {
+    const letter = await this.lettersRepository.findById(id);
+
+    if (!letter) {
+      throw Error('This Letter already exists');
     }
 
-    const idLetter = await lettersRepository.findOne(id);
+    letter.message = message;
+    letter.name = name;
 
-    if (!idLetter) {
-      throw Error('This letter not already exists');
-    }
+    const updateLetter = await this.lettersRepository.save(letter);
 
-    idLetter.name = name;
-    idLetter.message = message;
-
-    return lettersRepository.save(idLetter);
+    return updateLetter;
   }
 }
 

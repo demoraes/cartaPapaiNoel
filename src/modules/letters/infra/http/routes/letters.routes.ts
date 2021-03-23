@@ -1,16 +1,18 @@
 import { Router } from 'express';
-import { getMongoRepository } from 'typeorm';
 
+import Lettersrepository from '@modules/letters/infra/typeorm/repositories/LettersRepository';
 import CreateLettersService from '@modules/letters/services/CreateLetterService';
+import ReadLetterService from '@modules/letters/services/ReadLetterService';
+import { ObjectId } from 'mongodb';
 import UpdateLetterService from '@modules/letters/services/UpdateLetterService';
 import DeleteLetterService from '@modules/letters/services/DeleteLetterService';
-import Letter from '@modules/letters/infra/typeorm/models/Letter';
 
 const lettersRouter = Router();
 
 lettersRouter.get('/', async (request, response) => {
-  const lettersRepository = getMongoRepository(Letter);
-  const letters = await lettersRepository.find();
+  const lettersrepository = new Lettersrepository();
+
+  const letters = await lettersrepository.findAll();
 
   return response.json(letters);
 });
@@ -20,7 +22,9 @@ lettersRouter.post('/', async (request, response) => {
   try {
     const { name, message } = request.body;
 
-    const createLetter = new CreateLettersService();
+    const lettersrepository = new Lettersrepository();
+
+    const createLetter = new CreateLettersService(lettersrepository);
 
     const letter = await createLetter.execute({ message, name });
 
@@ -31,13 +35,32 @@ lettersRouter.post('/', async (request, response) => {
 });
 
 
+lettersRouter.put('/:id/read', async (request, response) => {
+  try {
+    const id = new ObjectId(request.params.id);
+
+    const lettersrepository = new Lettersrepository();
+
+    const updateReadLetter = new ReadLetterService(lettersrepository);
+
+    const letter = await updateReadLetter.execute(id);
+
+    return response.json(letter);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
+  }
+});
+
+
 lettersRouter.put('/:id', async (request, response) => {
   try {
-    const { id } = request.params;
+    const id = new ObjectId(request.params.id);
 
     const { name, message } = request.body;
 
-    const updateLetter = new UpdateLetterService();
+    const lettersrepository = new Lettersrepository();
+
+    const updateLetter = new UpdateLetterService(lettersrepository);
 
     const letter = await updateLetter.execute({ message, name, id });
 
@@ -50,11 +73,13 @@ lettersRouter.put('/:id', async (request, response) => {
 
 lettersRouter.delete('/:id', async (request, response) => {
   try {
-    const { id } = request.params;
+    const id = new ObjectId(request.params.id);
 
-    const deleteLetter = new DeleteLetterService();
+    const lettersrepository = new Lettersrepository();
 
-    const letter = await deleteLetter.execute({ id });
+    const deleteLetter = new DeleteLetterService(lettersrepository);
+
+    const letter = await deleteLetter.execute(id);
 
     return response.json(letter);
   } catch (err) {
