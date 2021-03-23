@@ -1,9 +1,10 @@
 import { DeleteResult, getMongoRepository, MongoRepository } from 'typeorm';
 
 import ILettersRepository from '@modules/letters/repositories/ILettersRepository';
+import ICreateLetterDTO from '@modules/letters/dtos/ICreateLetterDTO';
 
 import Letter from '../models/Letter';
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 
 class LettersRepository implements ILettersRepository {
   private ormRepository: MongoRepository<Letter>;
@@ -12,13 +13,11 @@ class LettersRepository implements ILettersRepository {
     this.ormRepository = getMongoRepository(Letter);
   }
 
-    
   public async findAll(): Promise<Letter[] | undefined> {
     const findNameExists = await this.ormRepository.find();
 
     return findNameExists || undefined;
   }
-
 
   public async findByName(name: string): Promise<Letter | undefined> {
     const findNameExists = await this.ormRepository.findOne({ name });
@@ -26,17 +25,25 @@ class LettersRepository implements ILettersRepository {
     return findNameExists || undefined;
   }
 
+  public async create({ message, name }: ICreateLetterDTO): Promise<Letter> {
+    const letter = this.ormRepository.create({ name, message });
+
+    await this.ormRepository.save(letter);
+
+    return letter;
+  }
+
   public async save(letter: Letter): Promise<Letter> {
     return await this.ormRepository.save(letter);
   }
 
-  public async delete(id: ObjectID): Promise<DeleteResult> {
+  public async deleteLetter(id: ObjectId): Promise<DeleteResult> {
     const letter = this.ormRepository.delete({ id });
 
     return letter;
   }
 
-  public async findById(id: ObjectID): Promise<Letter | undefined> {
+  public async findById(id: ObjectId): Promise<Letter | undefined> {
     const letter = this.ormRepository.findOne({ where: id });
 
     return letter;

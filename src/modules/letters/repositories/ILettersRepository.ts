@@ -7,5 +7,6 @@ export default interface ILettersRepository {
   findByName(name: string): Promise<Letter | undefined>;
   findById(id: ObjectID): Promise<Letter | undefined>;
   save(data: ICreateLetterDTO): Promise<Letter>;
-  delete(id: ObjectID): Promise<DeleteResult>;
+  create(data: ICreateLetterDTO): Promise<Letter>;
+  deleteLetter(id: ObjectID): Promise<DeleteResult | Letter[]>;
 }

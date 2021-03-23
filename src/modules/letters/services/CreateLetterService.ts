@@ -18,7 +18,7 @@ class CreateLetterService {
       throw Error('This name already exists');
     }
 
-    const letter = await this.lettersRepository.save({ message, name });
+    const letter = await this.lettersRepository.create({ message, name });
 
     return letter;
   }

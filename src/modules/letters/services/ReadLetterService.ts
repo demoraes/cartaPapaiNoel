@@ -14,7 +14,7 @@ class ReadLetterService {
 
     letter.read = true;
 
-    return this.lettersRepository.save(letter);;
+    return this.lettersRepository.save(letter);
   }
 }
 

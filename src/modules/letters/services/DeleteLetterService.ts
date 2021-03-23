@@ -8,10 +8,8 @@ class DeleteLetterService {
 
   constructor(private lettersRepository: ILettersRepository) { }
 
-  public async execute(id: ObjectID): Promise<DeleteResult> {
-    const letter = await this.lettersRepository.delete(id);
-
-    return letter;
+  public async execute(id: ObjectID): Promise<DeleteResult | Letter[]> {
+    return await this.lettersRepository.deleteLetter(id);
   }
 }
 
