@@ -6,8 +6,11 @@ import ReadLetterService from '@modules/letters/services/ReadLetterService';
 import { ObjectId } from 'mongodb';
 import UpdateLetterService from '@modules/letters/services/UpdateLetterService';
 import DeleteLetterService from '@modules/letters/services/DeleteLetterService';
+import ensureAuthenticated from '@modules/usuarios/infra/http/middlewares/ensureAuthenticated';
 
 const lettersRouter = Router();
+
+lettersRouter.use(ensureAuthenticated);
 
 lettersRouter.get('/', async (request, response) => {
   const lettersrepository = new Lettersrepository();
