@@ -61,4 +61,4 @@ Marca a carta como lida
 
 Deleta a carta
 
-# Obs: Todas as rotas estão no arquivo `rotas-to-insomnia.json`, que forão exportadas do Insomnia, no caso basta importar para dentro do seu Insomnia.
+Obs: Todas as rotas estão no arquivo `rotas-to-insomnia.json`, que forão exportadas do Insomnia, no caso basta importar para dentro do seu Insomnia.
