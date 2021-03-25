@@ -2,6 +2,12 @@
 
 API RESTful para cadastro de cartas cartinhas de Natal, implementada em Node.js/Express.js.
 
+# Deploy
+
+O deploy da aplicação foi feito utilizando o serviço EC2 da aws, a api está rodando na porta 3333, logo abaixo o link da api:
+
+http://34.234.93.100:3333
+
 # Autenticação
 
 As rotas são autenticadas usando jsonwebtoken, com excessão da rota `POST /users` usada para castro de usuários.
@@ -9,9 +15,9 @@ Para se autenticar na api basta usar a rota `POST /sessions` e utilizar o token 
 
 ## Instalar aplicativo 
 
-Para instalar o aplicativo, insira
+Para instalar o aplicativo, insira o comando abaixo:
 
-### `yarn`
+## `yarn`
 
 na pasta do aplicativo.
 
