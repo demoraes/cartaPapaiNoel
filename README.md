@@ -53,6 +53,10 @@ Cria uma nova carta
 
 Atualiza a carta
 
+### PUT `/letters/:id/read`
+
+Marca a carta como lida
+
 ### DELETE `/letters/:id`
 
 Deleta a carta
