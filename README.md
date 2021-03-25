@@ -60,3 +60,5 @@ Marca a carta como lida
 ### DELETE `/letters/:id`
 
 Deleta a carta
+
+# Obs: Todas as rotas estão no arquivo `rotas-to-insomnia.json`, que forão exportadas do Insomnia, no caso basta importar para dentro do seu Insomnia.
