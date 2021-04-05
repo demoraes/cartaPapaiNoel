@@ -4,9 +4,8 @@ API RESTful para cadastro de cartas cartinhas de Natal, implementada em Node.js/
 
 # Deploy
 
-O deploy da aplicação foi feito utilizando o serviço EC2 da aws, a api está rodando na porta 3333, logo abaixo o link da api:
+O deploy da aplicação foi feito utilizando o serviço EC2 da aws.
 
-http://34.234.93.100:3333
 
 # Autenticação
 
